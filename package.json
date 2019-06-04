@@ -1,7 +1,7 @@
 {
   "name": "json-duplicate-fragments-analyzer",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.0.1",
     "@types/jest": "24.0.13",
