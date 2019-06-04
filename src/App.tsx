@@ -1,6 +1,6 @@
 import './App.css';
 
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel, Typography } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import React, { ChangeEvent } from 'react';
@@ -10,6 +10,7 @@ import { analyzeJson } from './analyzer/analyzeJson';
 import { AnalyzerResult } from './analyzer/AnalyzerResult';
 import { useInterner } from './utils/interner';
 
+import Divider from '@material-ui/core/Divider';
 
 const duplicateValue = { whatever: 'This object is used several times' };
 const exampleJson = JSON.stringify(
@@ -40,12 +41,6 @@ const App: React.FC = () => {
   }, [setIncludeString]);
 
 
-  const analyzerResult: AnalyzerResult = React.useMemo(() => analyzeJson(json, {
-    indexPredicate: (value, path) => (typeof value !== 'number' && typeof value !== 'boolean' && (includeString || typeof value !== 'string')),
-    maxFragmentsLimit: 20
-  }), [json, includeString]);
-
-
   const interner = useInterner();
 
   return (
@@ -59,7 +54,7 @@ const App: React.FC = () => {
         })
       }>
 
-
+      <Typography variant="h6">Config</Typography>
       <TextField
         id="json-text"
         label="Json"
@@ -70,6 +65,7 @@ const App: React.FC = () => {
         onChange={handleJsonChange}
         margin="normal"
         variant="outlined"
+        placeholder="Paste JSON block here"
         style={
           interner({ width: '100%' })
         }
@@ -85,14 +81,42 @@ const App: React.FC = () => {
       </FormControlLabel>
 
 
-      <AnalyzerResultViewer result={analyzerResult} />
 
+      {json && <>
+        <Divider variant="fullWidth" />
+        <Typography variant="h6">Result</Typography>
+        <AnalyzerComponent json={json} includeString={includeString} /></>}
 
     </div>
   );
 }
 
 
+type AnalyzerComponentProps = { json: string, includeString: boolean };
+const AnalyzerComponent = ({ json, includeString }: AnalyzerComponentProps) => {
+  const analyzerResult: AnalyzerResult | Error = React.useMemo(() => analyzeOrError(json, includeString), [json, includeString]);
+
+  if (analyzerResult instanceof Error) {
+    return <div>
+      <Typography variant="body2">Error analyzing Json:</Typography>
+      <pre>{analyzerResult.stack || analyzerResult.toString()}</pre>
+
+    </div>;
+  } else {
+    return <AnalyzerResultViewer result={analyzerResult} />
+  }
+}
 
 export default App;
+
+function analyzeOrError(json: string, includeString: boolean): AnalyzerResult | Error {
+  try {
+    return analyzeJson(json, {
+      indexPredicate: (value, path) => (typeof value !== 'number' && typeof value !== 'boolean' && (includeString || typeof value !== 'string')),
+      maxFragmentsLimit: 20
+    });
+  } catch (e) {
+    return e as Error;
+  }
+}
 

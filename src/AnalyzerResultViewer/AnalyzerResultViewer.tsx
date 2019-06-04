@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { AnalyzerResult } from "../analyzer/AnalyzerResult";
 import { FragmentViewer } from './FragmentViewer';
@@ -13,9 +13,10 @@ export type AnalyzerResultViewerProps = {
 };
 export const AnalyzerResultViewer = React.memo(({ result }: AnalyzerResultViewerProps) => {
     return <>
-        <Typography variant="h6">
-            Original JSON is {result.compactJsonLength} characters ({result.originalJsonLength} before compact rewrite).
-        Found {result.fragmentsInfo.length} duplicated fragments.
+        <Typography variant="body2">
+            Original JSON is {result.compactJsonLength} characters ({result.originalJsonLength} before compact rewrite).</Typography>
+        <Typography variant="body2">
+            Found {result.fragmentsInfo.length} duplicated fragments.
       </Typography>
         <div>
             {result.fragmentsInfo.map((fragInfo, index) => (
