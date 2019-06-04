@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/json-duplicate-fragments-analyzer.git/static/css/main.27fd15f6.chunk.css",
-    "main.js": "/json-duplicate-fragments-analyzer.git/static/js/main.b7d18665.chunk.js",
-    "main.js.map": "/json-duplicate-fragments-analyzer.git/static/js/main.b7d18665.chunk.js.map",
-    "runtime~main.js": "/json-duplicate-fragments-analyzer.git/static/js/runtime~main.b4e3a8c0.js",
-    "runtime~main.js.map": "/json-duplicate-fragments-analyzer.git/static/js/runtime~main.b4e3a8c0.js.map",
-    "static/js/2.803b15be.chunk.js": "/json-duplicate-fragments-analyzer.git/static/js/2.803b15be.chunk.js",
-    "static/js/2.803b15be.chunk.js.map": "/json-duplicate-fragments-analyzer.git/static/js/2.803b15be.chunk.js.map",
-    "index.html": "/json-duplicate-fragments-analyzer.git/index.html",
-    "precache-manifest.a452af1dac40f88069cff4e0de237b59.js": "/json-duplicate-fragments-analyzer.git/precache-manifest.a452af1dac40f88069cff4e0de237b59.js",
-    "service-worker.js": "/json-duplicate-fragments-analyzer.git/service-worker.js",
-    "static/css/main.27fd15f6.chunk.css.map": "/json-duplicate-fragments-analyzer.git/static/css/main.27fd15f6.chunk.css.map"
+    "main.css": "/json-duplicate-fragments-analyzer/static/css/main.27fd15f6.chunk.css",
+    "main.js": "/json-duplicate-fragments-analyzer/static/js/main.c042e0b5.chunk.js",
+    "main.js.map": "/json-duplicate-fragments-analyzer/static/js/main.c042e0b5.chunk.js.map",
+    "runtime~main.js": "/json-duplicate-fragments-analyzer/static/js/runtime~main.4caf13c7.js",
+    "runtime~main.js.map": "/json-duplicate-fragments-analyzer/static/js/runtime~main.4caf13c7.js.map",
+    "static/js/2.803b15be.chunk.js": "/json-duplicate-fragments-analyzer/static/js/2.803b15be.chunk.js",
+    "static/js/2.803b15be.chunk.js.map": "/json-duplicate-fragments-analyzer/static/js/2.803b15be.chunk.js.map",
+    "index.html": "/json-duplicate-fragments-analyzer/index.html",
+    "precache-manifest.b6920dd54aa4c2080629e1055f965bb8.js": "/json-duplicate-fragments-analyzer/precache-manifest.b6920dd54aa4c2080629e1055f965bb8.js",
+    "service-worker.js": "/json-duplicate-fragments-analyzer/service-worker.js",
+    "static/css/main.27fd15f6.chunk.css.map": "/json-duplicate-fragments-analyzer/static/css/main.27fd15f6.chunk.css.map"
   }
 }
