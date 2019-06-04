@@ -1,7 +1,5 @@
-import React from "react";
-
 import stableStringify from 'json-stable-stringify';
-import { keys } from "@material-ui/core/styles/createBreakpoints";
+import React from 'react';
 
 export type Interner = <T extends any>(orginal: T) => T;
 

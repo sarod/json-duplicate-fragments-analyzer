@@ -1,47 +1,25 @@
 import stableStringify from 'json-stable-stringify';
-import { number } from 'prop-types';
+
+import { AnalyzerResult } from './AnalyzerResult';
+import { DuplicateInfo } from './DuplicateInfo';
+import { JsonFragment } from './JsonFragment';
+import { JsonValue } from './JsonValue';
+import { Path } from './Path';
 
 
-export interface JsonFragment {
-  value: JsonValue;
-  path: Path
-}
-
-
-export type JsonDupsInfo = {
-  originalJsonTextLength: number,
-  normalizedJsonTextLength: number,
-  fragmentsInfo: FragmentInfo[];
-}
-
-export type FragmentInfo = {
-  fragmentsCount: number;
-  stringifiedLength: number;
-  percentOfTotalLength: number;
-  preview: string;
-  fragments: JsonFragment[];
-};
-
-export type Path = string[];
-
-export type Options = {
+export type AnalyzeOptions = {
   indexPredicate: (value: JsonValue, path: Path) => boolean;
   maxFragmentsLimit: number;
 }
 
-export interface JsonObject { [key: string]: JsonValue };
-export interface JsonArray extends Array<JsonValue> {
-}
-export type JsonValue = number | string | boolean | JsonArray | JsonObject;
 
-
-export const defaultOptions: Options = {
+export const defaultOptions: AnalyzeOptions = {
   indexPredicate: (value: JsonValue, path: Path) => true,
   maxFragmentsLimit: 100
 }
 
 
-export const computeJsonDupsInfo = (json: string, options?: Partial<Options>): JsonDupsInfo => {
+export const analyzeJson = (json: string, options?: Partial<AnalyzeOptions>): AnalyzerResult => {
   const optionsWithDefaults = { ...defaultOptions, ...options };
 
   const rootValue = JSON.parse(json);
@@ -49,7 +27,7 @@ export const computeJsonDupsInfo = (json: string, options?: Partial<Options>): J
   const fragmentIndex = computeDedupFragmentIndex(rootValue, optionsWithDefaults);
   const fragmentsInfo = Object.entries(fragmentIndex)
     .map(
-      ([key, fragments]): FragmentInfo => {
+      ([key, fragments]): DuplicateInfo => {
         const stringifiedLength = fragments.map(f => JSON.stringify(f.value).length).reduce((sum, v) => sum + v);
         return {
           preview: JSON.stringify(fragments[0].value).substr(0, 200),
@@ -61,7 +39,7 @@ export const computeJsonDupsInfo = (json: string, options?: Partial<Options>): J
         }
       }
     )
-    .filter(dupInfo => dupInfo.fragmentsCount > 2)
+    .filter(dupInfo => dupInfo.fragmentsCount >= 2)
     .sort((a, b) => {
       // Sort descending
       return b.stringifiedLength - a.stringifiedLength;
@@ -69,8 +47,8 @@ export const computeJsonDupsInfo = (json: string, options?: Partial<Options>): J
     .slice(0, optionsWithDefaults.maxFragmentsLimit);
 
   return {
-    originalJsonTextLength: json.length,
-    normalizedJsonTextLength: normalizedJsonTextLength,
+    originalJsonLength: json.length,
+    compactJsonLength: normalizedJsonTextLength,
     fragmentsInfo,
   };
 }
@@ -82,7 +60,7 @@ type FragmentIndex = {
 };
 
 
-const computeDedupFragmentIndex = (rootValue: JsonValue, { indexPredicate }: Options): FragmentIndex => {
+const computeDedupFragmentIndex = (rootValue: JsonValue, { indexPredicate }: AnalyzeOptions): FragmentIndex => {
 
 
   const addFragmentToIndex = (fragmentIndex: FragmentIndex, fragment: JsonFragment): FragmentIndex => {
@@ -96,7 +74,7 @@ const computeDedupFragmentIndex = (rootValue: JsonValue, { indexPredicate }: Opt
 
 
   const indexObject = (value: JsonValue, path: Path, index: FragmentIndex): FragmentIndex => {
-    if (value == null || value == undefined) {
+    if (value === null || value === undefined) {
       return index;
     }
     if (!indexPredicate(value, path)) {
